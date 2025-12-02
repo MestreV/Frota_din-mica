@@ -163,7 +163,58 @@ void listar_aeronave_por_situacao(situacao_t situacao_procurada, dados_aeronave_
 }
 
 
-void listar_rotas_por_destino(string destino_procurado, dados_rota_t *rota);
-void listar_rotas_por_origem(string origem_procurada, dados_rota_t *rota);
-void listar_rotas_maior_passageiros(int maior_passageiros, dados_rota_t *rota);
-void listar_rotas_menor_passageiros(int menor_passageiros, dados_rota_t *rota);
+void listar_rotas_por_destino(string destino_procurado, dados_rota_t *lista)
+{
+    int rotas_encontradas = 0;
+    int i;
+
+    while (lista) {
+        i++;
+        if (strcmp(destino_procurado, lista->local_destino) == 0) {
+            printf("Aeronave (%d):\n", i);
+            mostrar_dados_aeronave(lista, stdout);
+            printf("\n\n");
+            aeronaves_encontradas++;
+        }
+    }
+
+    if (aeronaves_encontradas == 0){
+        printf("O destino <%s> nao esta registrado.\n", destino_procurado);
+        printf("Os destinos existentes sao:\n");
+        //mostrar_destinos_existentes();
+        printf("\n\n");
+    }
+}
+
+void listar_rotas_por_origem(string origem_procurada, dados_rota_t *lista)
+{
+    int rotas_encontradas = 0;
+    int i;
+
+    while (lista) {
+        i++;
+        if (strcmp(origem_procurada, lista->local_partida) == 0) {
+            printf("Aeronave (%d):\n", i);
+            mostrar_dados_aeronave(lista, stdout);
+            printf("\n\n");
+            aeronaves_encontradas++;
+        }
+    }
+
+    if (aeronaves_encontradas == 0){
+        printf("A origem <%s> nao esta registrada.\n", origem_procurada);
+        printf("As origens existentes sao:\n");
+        //mostrar_origens_existentes();
+        printf("\n\n");
+    }
+}
+
+void listar_rotas_maior_passageiros(int maior_passageiros, dados_rota_t *lista)
+{
+
+}
+
+void listar_rotas_menor_passageiros(int menor_passageiros, dados_rota_t *lista)
+{
+
+}
