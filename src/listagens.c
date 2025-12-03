@@ -14,18 +14,18 @@ void mostrar_dados_aeronave(dados_aeronave_t *aeronave, FILE* fp)
     fprintf(fp, "Numero de passageiros.....: %d\n", aeronave->num_passageiros);
     fprintf(fp, "Situacao..................: %i\n", aeronave->situacao);
     fprintf(fp, "Tripulacao necessaria.....:\n");
-    fprintf(fp, "  Pilotos....: %d\n", aeronave->tripulacao->pilotos);
-    fprintf(fp, "  Comissarias: %d\n", aeronave->tripulacao->comissarias_de_bordo);
-    fprintf(fp, "  Total......: %d\n", aeronave->tripulacao->total);
+    fprintf(fp, "  Pilotos....: %d\n", aeronave->tripulacao.pilotos);
+    fprintf(fp, "  Comissarias: %d\n", aeronave->tripulacao.comissarias_de_bordo);
+    fprintf(fp, "  Total......: %d\n", aeronave->tripulacao.total);
 }
 
 void mostrar_dados_rota(dados_rota_t *rota, FILE* fp)
 {
     fprintf(fp, "Codigo..................: %i\n", rota->codigo);
-    fprintf(fp, "Data e hora.............: %d/%d/%d as %d:%d\n", rota->data_hora->dia, rota->data_hora->mes, rota->data_hora->ano, rota->data_hora->hora, rota->data_hora->minutos);
+    fprintf(fp, "Data e hora.............: %d/%d/%d as %d:%d\n", rota->data_hora.dia, rota->data_hora.mes, rota->data_hora.ano, rota->data_hora.hora, rota->data_hora.minutos);
     fprintf(fp, "Local de partida........: %s\n", rota->local_partida);
     fprintf(fp, "Local de destino........: %s\n", rota->local_destino);
-    fprintf(fp, "Tempo estimado..........: %d horas e %d minutos\n", rota->tempo_estimado->hora, rota->tempo_estimado->minutos);
+    fprintf(fp, "Tempo estimado..........: %d horas e %d minutos\n", rota->tempo_estimado.hora, rota->tempo_estimado.minutos);
     fprintf(fp, "Combustivel necessario..: %d Litros\n", rota->combustivel_necessario);
     fprintf(fp, "Qtd de passageiros......: %d\n", rota->qtd_passageiros);
     fprintf(fp, "Qtd de carga............: %i\n", rota->qtd_carga);
@@ -42,7 +42,7 @@ void listar_aeronaves_cadastradas(dados_aeronave_t *lista)
     }
 }
 
-void listar_rotas_cadastradas(dado_rota_t *lista)
+void listar_rotas_cadastradas(dados_rota_t *lista)
 {
     while (lista) {
         mostrar_dados_rota(lista, stdout);
@@ -172,13 +172,13 @@ void listar_rotas_por_destino(string destino_procurado, dados_rota_t *lista)
         i++;
         if (strcmp(destino_procurado, lista->local_destino) == 0) {
             printf("Aeronave (%d):\n", i);
-            mostrar_dados_aeronave(lista, stdout);
+            mostrar_dados_rota(lista, stdout);
             printf("\n\n");
-            aeronaves_encontradas++;
+            rotas_encontradas++;
         }
     }
 
-    if (aeronaves_encontradas == 0){
+    if (rotas_encontradas == 0){
         printf("O destino <%s> nao esta registrado.\n", destino_procurado);
         printf("Os destinos existentes sao:\n");
         //mostrar_destinos_existentes();
@@ -195,13 +195,13 @@ void listar_rotas_por_origem(string origem_procurada, dados_rota_t *lista)
         i++;
         if (strcmp(origem_procurada, lista->local_partida) == 0) {
             printf("Aeronave (%d):\n", i);
-            mostrar_dados_aeronave(lista, stdout);
+            mostrar_dados_rota(lista, stdout);
             printf("\n\n");
-            aeronaves_encontradas++;
+            rotas_encontradas++;
         }
     }
 
-    if (aeronaves_encontradas == 0){
+    if (rotas_encontradas == 0){
         printf("A origem <%s> nao esta registrada.\n", origem_procurada);
         printf("As origens existentes sao:\n");
         //mostrar_origens_existentes();
@@ -209,12 +209,56 @@ void listar_rotas_por_origem(string origem_procurada, dados_rota_t *lista)
     }
 }
 
+int achar_maior_numero_de_passageiros(dados_rota_t *lista)
+{
+    int maior_passageiros = 0;
+
+    while (lista) {
+        if (maior_passageiros < lista->qtd_passageiros) {
+            maior_passageiros = lista->qtd_passageiros;
+        }
+    }
+    return maior_passageiros;
+}
+
+int achar_menor_numero_de_passageiros(dados_rota_t *lista)
+{
+    int menor_passageiros = 1000;
+
+    while (lista) {
+        if (menor_passageiros > lista->qtd_passageiros) {
+            menor_passageiros = lista->qtd_passageiros;
+        }
+    }
+    return menor_passageiros;
+}
+
 void listar_rotas_maior_passageiros(int maior_passageiros, dados_rota_t *lista)
 {
+    int i = 0;
 
+    while (lista) {
+        i++;
+        if (lista->qtd_passageiros == maior_passageiros){
+                printf("Rota (%i):\n", i);
+                mostrar_dados_rota(lista, stdout);
+                printf("\n");                        
+        }
+    }
+    printf("\n");
 }
 
 void listar_rotas_menor_passageiros(int menor_passageiros, dados_rota_t *lista)
 {
+    int i = 0;
 
+    while (lista) {
+        i++;
+        if (lista->qtd_passageiros == menor_passageiros){
+                printf("Rota (%i):\n", i);
+                mostrar_dados_rota(lista, stdout);
+                printf("\n");                        
+        }
+    }
+    printf("\n");
 }

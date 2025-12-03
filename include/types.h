@@ -1,7 +1,13 @@
-#define T_STR   100
-#define FIM     0
+#ifndef TYPES_H
+#define TYPES_H
 
 
+#define T_STR         100
+#define STR_NOME_ARQ  20
+#define FIM           0
+
+
+typedef char str_arq[STR_NOME_ARQ];
 
 typedef char string[T_STR];
 
@@ -33,9 +39,11 @@ typedef struct dados_aeronave{
     unsigned int num_passageiros;
     situacao_t situacao;
     tripulacao_necessaria_t tripulacao;
+    struct dados_aeronave *prox;
 }dados_aeronave_t;
 
 typedef struct dados_rota{
+    string matricula_alocada; 
     unsigned int codigo;
     data_hora_t data_hora;
     string local_partida;
@@ -44,6 +52,8 @@ typedef struct dados_rota{
     unsigned int combustivel_necessario;
     unsigned int qtd_passageiros;
     unsigned int qtd_carga;
-    stringao nomes;
-    string matricula_alocada;
+    string nomes;
+    struct dados_rota *prox;
 }dados_rota_t;
+
+#endif

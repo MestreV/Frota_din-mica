@@ -1,4 +1,6 @@
 #include "../include/complementos.h"
+#include <string.h>
+#include <ctype.h>
 
 void retirar_enter(char* str)
 {

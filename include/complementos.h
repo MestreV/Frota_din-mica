@@ -1,10 +1,8 @@
 #ifndef COMPLEMENTOS_H
 #define COMPLEMENTOS_H
 
+#include "types.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
 
 void retirar_enter(char* str);
 void formatar_maiuculo(char* str);
