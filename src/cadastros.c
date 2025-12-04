@@ -40,14 +40,14 @@ dados_aeronave_t *nova_aeronave()
     
     if (nova->tipo == PASSAGEIRO) {
         printf("Numero de passageiros...............: ");
-        scanf("%d", nova->num_passageiros);       
+        scanf("%d", &nova->num_passageiros);       
     } else {
         nova->num_passageiros = 0;
     }
     
     printf("OBS(situacao):\n Operacao = 1\n Manutencao = 2\n");
     printf("Situacao da aeronave................: ");
-    scanf("%d", nova->situacao);
+    scanf("%d", &nova->situacao);
     
     if (nova->situacao == OPERACAO) {
         printf("Tripulacao necessaria...............:\n");

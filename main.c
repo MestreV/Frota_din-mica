@@ -7,6 +7,7 @@
 #include "./include/main.h"
 #include "./include/complementos.h"
 #include "./include/arquivos.h"
+#include "./include/consultas.h"
 #include <stdio.h>
 
 
@@ -14,7 +15,7 @@ int main()
 {   
     dados_aeronave_t *lista_aeronaves = NULL, *aux_aeronave = NULL;
     dados_rota_t *lista_rotas = NULL, *aux_rotas = NULL;
-    int opc, opc1, opc2, ano_desejado, maior_passageiros, menor_passageiros, inicio, fim;
+    int opc, opc1, opc2, ano_desejado, maior_passageiros, menor_passageiros, inicio, fim, comeco, final, combustivel_total;
     string fabricante_desejado, modelo_desejado, destino_desejado, destino_determinado, origem_desejada, prefixo_desejado, matricula_percentual; 
     tipo_t C_P;
     situacao_t O_M;
@@ -36,6 +37,9 @@ int main()
                                             opc2 = INSERIR_AERONAVE();
 
                                             switch (opc2) {
+                                                case 0: printf("Voltando!\n");
+                                                        break;
+
                                                 case 1: aux_aeronave = nova_aeronave();
                                                         inserir_lista_aeronave_pelo_inicio(&lista_aeronaves, aux_aeronave);
                                                         break;
@@ -45,13 +49,16 @@ int main()
                                                         inserir_lista_aeronave_pelo_final(&lista_aeronaves, aux_aeronave);  
                                                         break;                                             
                                             }
-                                        } while(opc2 != FIM);
+                                        } while(opc2 != 0);
                                         break;
                                 
                                 case 2: do {
                                             opc2 = INSERIR_ROTA();
                                             
                                             switch (opc2) {
+                                                case 0: printf("Voltando!\n");
+                                                        break;
+
                                                 case 1: aux_rotas = nova_rota();
                                                         inserir_lista_rota_pelo_inicio(&lista_rotas, aux_rotas);
                                                         break;
@@ -61,7 +68,7 @@ int main()
                                                         inserir_lista_rota_pelo_final(&lista_rotas, aux_rotas);      
                                                         break;                                         
                                             }
-                                        } while(opc2 != FIM);
+                                        } while(opc2 != 0);
                                         break;
                                 
                                 case 0: printf("Voltando!\n");
@@ -171,9 +178,9 @@ int main()
                                         retirar_enter(destino_determinado);
                                         formatar_maiuculo(destino_determinado);
 
-                                        printf("Colocar apenas dia e mes.\nData inicial:");
+                                        printf("Colocar apenas dia e mes.\nData inicial: ");
                                         scanf("%d/%d", &data_inicio.dia, &data_inicio.mes);
-                                        printf("Data final:");
+                                        printf("Data final: ");
                                         scanf("%d/%d", &data_termino.dia, &data_termino.mes);
                                         getchar();
 
@@ -198,9 +205,26 @@ int main()
                     break;
 
             case 5: 
+                    printf("CONSUMO DE COMBUSTIVEL POR INTERVALO DE DATA\n");
+
+                    printf("Colocar apenas dia e mes.\nData inicial:");
+                    scanf("%d/%d", &data_comeco.dia, &data_comeco.mes);
+                    printf("Data final: ");
+                    scanf("%d/%d", &data_terminado.dia, &data_terminado.mes);
+                    getchar();
+
+                    inicio = data_inicio_intervalo_em_horas(data_comeco);
+                    fim = data_final_intervalo_em_horas(data_terminado);
+
+                    combustivel_total = combustivel_total_por_intervalo(comeco, final, lista_rotas);
+                    printf("O total de combustivel consumido foi: %dL\n\n", combustivel_total);
                     break;
 
-            case 6: 
+            case 6: printf("CONSULTA DE ROTA POR DATA\n");
+                    printf("Data da rota: ");
+                    scanf("%d/%d>", &data_desejada.dia, &data_desejada.mes);
+                    getchar();
+                    consultar_rota_data(data_desejada, lista_rotas);   
                     break;
 
             case 0: printf("Fechando!\n");

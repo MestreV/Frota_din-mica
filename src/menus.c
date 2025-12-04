@@ -96,7 +96,7 @@ int INSERIR_AERONAVE(void)
     printf("  2.Pelo fim\n");
     printf("  0.Voltar!\n");
     printf("  : : : :");
-    scanf("%i", &opc);
+    scanf("%i%*c", &opc);
 }
 
 int INSERIR_ROTA(void)
@@ -108,5 +108,5 @@ int INSERIR_ROTA(void)
     printf("  2.Pelo fim\n");
     printf("  0.Voltar!\n");
     printf("  : : : :");
-    scanf("%i", &opc);   
+    scanf("%i%*c", &opc);   
 }
