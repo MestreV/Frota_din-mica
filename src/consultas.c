@@ -1,20 +1,22 @@
 #include "../include/consultas.h"
 #include "../include/types.h"
+#include "../include/listagens.h"
 
 int combustivel_total_por_intervalo(int inicio, int fim, dados_rota_t *lista)
 {
-        int horas_data;
-        int combustivel_total = 0;
+    int horas_data;
+    int combustivel_total = 0;
 
-        while (lista){
-                horas_data = 24* ((30*lista->data_hora.mes) + lista->data_hora.dia);
-                for (inicio; inicio <= fim; inicio++){
-                        if (inicio == horas_data){
-                                combustivel_total += lista->combustivel_necessario;
-                        }
-                }
-        }
-        return combustivel_total;
+    while (lista){
+            horas_data = 24* ((30*lista->data_hora.mes) + lista->data_hora.dia);
+            for (inicio; inicio <= fim; inicio++){
+                    if (inicio == horas_data){
+                            combustivel_total += lista->combustivel_necessario;
+                    }
+            }
+            lista = lista->prox;
+    }
+    return combustivel_total;
 }
 
 int consultar_rota_data(data_hora_t data_procurada, dados_rota_t *lista)
@@ -30,6 +32,7 @@ int consultar_rota_data(data_hora_t data_procurada, dados_rota_t *lista)
             printf("\n\n");
             rotas_encontradas++;
         }
+        lista = lista->prox;
     }
 
     if (rotas_encontradas == 0){

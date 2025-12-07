@@ -4,6 +4,21 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+int checar_matricula_alocada(char* matricula_duvidosa, dados_aeronave_t *lista)
+{
+    int true_or_false = 0;
+
+    while (lista) {
+        if (strcmp(matricula_duvidosa, lista->matricula) == 0) {
+            true_or_false++;
+            return true_or_false;
+        }
+        lista = lista->prox;
+    }
+    return true_or_false;
+}
+
+
 dados_aeronave_t *nova_aeronave()
 {
     dados_aeronave_t *nova = NULL;
@@ -15,6 +30,11 @@ dados_aeronave_t *nova_aeronave()
     printf("Identificacao da aeronave...........: ");
     scanf("%d", &nova->identificacao);
     getchar();
+
+    printf("Matricula da aeronave...............: ");
+    fgets(nova->matricula, T_STR, stdin);
+    retirar_enter(nova->matricula);
+    formatar_maiuculo(nova->matricula);
     
     printf("Modelo da aeronave..................: ");
     fgets(nova->modelo, T_STR, stdin);
@@ -25,16 +45,11 @@ dados_aeronave_t *nova_aeronave()
     fgets(nova->fabricante, T_STR, stdin);
     retirar_enter(nova->fabricante);
     formatar_maiuculo(nova->fabricante);
-    
-    printf("Matricula da aeronave...............: ");
-    fgets(nova->matricula, T_STR, stdin);
-    retirar_enter(nova->matricula);
-    formatar_maiuculo(nova->matricula);
 
     printf("Ano de fabricacao...................: ");
     scanf("%d", &nova->ano_fabricacao);
 
-    printf("OBS(Tipos):\n Carga = 1\n Passageiro = 2\n");
+    printf("OBS(Tipos):\n Carga       <1>\n Passageiro  <2>\n");
     printf("Tipo de aeronave....................: ");
     scanf("%d", &nova->tipo);
     
@@ -50,10 +65,10 @@ dados_aeronave_t *nova_aeronave()
     scanf("%d", &nova->situacao);
     
     if (nova->situacao == OPERACAO) {
-        printf("Tripulacao necessaria...............:\n");
-        printf("Pilotos: ");
+        printf("Tripulacao necessaria...\n");
+        printf(" Pilotos................: ");
         scanf("%d", &nova->tripulacao.pilotos);
-        printf("Comissarias de bordo: ");
+        printf(" Comissarias de bordo...: ");
         scanf("%d", &nova->tripulacao.comissarias_de_bordo);
         nova->tripulacao.total = nova->tripulacao.pilotos + nova->tripulacao.comissarias_de_bordo;
         printf("Total: %d", nova->tripulacao.total);
@@ -70,9 +85,10 @@ dados_aeronave_t *nova_aeronave()
 }
 
 
-dados_rota_t *nova_rota()
+dados_rota_t *nova_rota(dados_aeronave_t lista_aeronave)
 {
     dados_rota_t *nova = NULL;
+    int validacao;
 
     nova = (dados_rota_t*)malloc(sizeof(dados_rota_t));
   
@@ -82,6 +98,17 @@ dados_rota_t *nova_rota()
     fgets(nova->matricula_alocada, T_STR, stdin);
     retirar_enter(nova->matricula_alocada);
     formatar_maiuculo(nova->matricula_alocada);
+    validacao = checar_matricula_alocada(nova->matricula_alocada, lista_aeronave);
+    while (validacao = FALSE) {
+        printf("Matricula <%s> inexistente para alocacao\n", nova->matricula_alocada);
+        printf("As matriculas existentes eh:\n");
+        mostrar_matriculas_existentes(lista_aeronave);
+        free(nova->matricula_alocada);
+
+        printf("Aeronave alocada.............: ");
+        fgets(nova->matricula_alocada, T_STR, stdin);        
+    }
+
 
     printf("Codigo da rota...............: ");
     scanf("%d", &nova->codigo);

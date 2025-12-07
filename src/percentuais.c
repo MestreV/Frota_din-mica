@@ -1,4 +1,5 @@
 #include "../include/percentuais.h"
+#include "../include/existencia.h"
 #include "../include/types.h"
 #include <string.h>
 
@@ -22,6 +23,19 @@ int data_final_intervalo_em_horas(data_hora_t data_termino)
         return horas_termino;
 }
 
+int contador_de_destinos(string destino, dados_rota_t *lista)
+{
+    int destinos_encontrados = 0;
+
+    while (lista){
+        if(strcmp(lista->local_destino, destino) == 0){
+                destinos_encontrados++;
+        }
+        lista = lista->prox;
+    }
+    return destinos_encontrados;
+}
+
 void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim, dados_rota_t *lista)
 {
     int total_voos_do_intervalo = 0;
@@ -30,11 +44,7 @@ void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim
     float percentual_voos;
     int horas_data;
 
-    while (lista){
-            if(strcmp(lista->local_destino, destino) == 0){
-                    destinos_encontrados++;
-            }
-    }     
+    destinos_encontrados = contador_de_destinos(destino, lista);    
         
     if (destinos_encontrados != 0){
         while (lista){
@@ -46,6 +56,7 @@ void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim
                 if (inicio == horas_data && strcmp(lista->local_destino, destino) == 0){
                     voos_destino++;
                 }
+                lista = lista->prox;
             }
         }
     if (voos_destino != 0){
@@ -56,7 +67,7 @@ void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim
     if (voos_destino == 0){
         printf("O destino <%s> nao possui voos nesse intervalo de datas.\n", destino);
         printf("Tente outro desses destinos cadastrados:\n");
-        //mostrar_destinos_existentes();
+        mostrar_destinos_existentes(lista);
         printf("\n");
         }
     }
@@ -83,9 +94,11 @@ void percentual_voos_realizados_por_aeronave(string matricula_aeronave, dados_ro
                 if (strcmp(lista->matricula_alocada, matricula_aeronave) == 0){
                     voos_aeronave++;
                 }
+                lista = lista->prox;
             }
             aeronave_encontrada++;
         }
+        lista_a = lista_a->prox;
     }
 
     if (voos_aeronave != 0){

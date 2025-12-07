@@ -1,4 +1,5 @@
 #include "../include/types.h"
+#include "../include/existencia.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -35,6 +36,11 @@ void mostrar_dados_rota(dados_rota_t *rota, FILE* fp)
 
 void listar_aeronaves_cadastradas(dados_aeronave_t *lista)
 {
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
+
     while (lista) {
         mostrar_dados_aeronave(lista, stdout);
         printf("\n");
@@ -44,6 +50,11 @@ void listar_aeronaves_cadastradas(dados_aeronave_t *lista)
 
 void listar_rotas_cadastradas(dados_rota_t *lista)
 {
+    if (!lista) {
+        printf("Nenhuma rota cadastrada.\n");
+        return;
+    }
+
     while (lista) {
         mostrar_dados_rota(lista, stdout);
         printf("\n");
@@ -51,25 +62,32 @@ void listar_rotas_cadastradas(dados_rota_t *lista)
     }
 }
 
-void listar_aeronave_fabricante(string fabricante_procurado, dados_aeronave_t *lista)
+void listar_aeronave_fabricante(char* fabricante_procurado, dados_aeronave_t *lista)
 {
     int fabricantes_encontrados = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
+
 
     while (lista) {
         i++;
         if (strcmp(fabricante_procurado, lista->fabricante) == 0) {
             printf("Aeronave (%d):\n", i);
             mostrar_dados_aeronave(lista, stdout);
-            printf("\n\n");
+            printf("\n");
             fabricantes_encontrados++;
         }
+        lista = lista->prox;
     }
 
     if (fabricantes_encontrados == 0){
         printf("O fabricante <%s> nao esta registrado.\n", fabricante_procurado);
         printf("Os fabricantes existentes sao:\n");
-        //mostrar_fabricantes_existentes();
+        mostrar_fabricantes_existentes(lista);
         printf("\n\n");
     }
 }
@@ -77,16 +95,23 @@ void listar_aeronave_fabricante(string fabricante_procurado, dados_aeronave_t *l
 void listar_aeronave_por_tipo(tipo_t tipo_procurado, dados_aeronave_t *lista)
 {
     int aeronaves_encontradas = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
         if (tipo_procurado == lista->tipo) {
             printf("Aeronave (%d):\n", i);
             mostrar_dados_aeronave(lista, stdout);
-            printf("\n\n");
+            printf("\n");
             aeronaves_encontradas++;
         }
+        lista = lista->prox;
+
     }
 
     if (aeronaves_encontradas == 0){
@@ -95,25 +120,32 @@ void listar_aeronave_por_tipo(tipo_t tipo_procurado, dados_aeronave_t *lista)
     }
 }
 
-void listar_aeronave_por_modelo(string modelo_procurado, dados_aeronave_t *lista)
+void listar_aeronave_por_modelo(char* modelo_procurado, dados_aeronave_t *lista)
 {
     int aeronaves_encontradas = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
         if (strcmp(modelo_procurado, lista->modelo) == 0) {
             printf("Aeronave (%d):\n", i);
             mostrar_dados_aeronave(lista, stdout);
-            printf("\n\n");
+            printf("\n");
             aeronaves_encontradas++;
         }
+        lista = lista->prox;
+
     }
 
     if (aeronaves_encontradas == 0){
         printf("O modelo <%s> nao esta registrado.\n", modelo_procurado);
         printf("Os modelos existentes sao:\n");
-        //mostrar_modelos_existentes();
+        mostrar_modelos_existentes(lista);
         printf("\n\n");
     }
 }
@@ -121,7 +153,12 @@ void listar_aeronave_por_modelo(string modelo_procurado, dados_aeronave_t *lista
 void listar_aeronave_por_ano(int ano_procurado, dados_aeronave_t *lista)
 {
     int aeronaves_encontradas = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
@@ -131,12 +168,14 @@ void listar_aeronave_por_ano(int ano_procurado, dados_aeronave_t *lista)
             printf("\n\n");
             aeronaves_encontradas++;
         }
+        lista = lista->prox;
+
     }
 
     if (aeronaves_encontradas == 0){
         printf("O ano <%d> nao esta registrado.\n", ano_procurado);
         printf("Os anos de fabricacao existentes sao:\n");
-        //mostrar_anos_de_fabricacao_existentes();
+        mostrar_anos_de_fabricacao_existentes(lista);
         printf("\n\n");
     }
 }
@@ -144,7 +183,12 @@ void listar_aeronave_por_ano(int ano_procurado, dados_aeronave_t *lista)
 void listar_aeronave_por_situacao(situacao_t situacao_procurada, dados_aeronave_t *lista)
 {
     int aeronaves_encontradas = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
@@ -154,6 +198,8 @@ void listar_aeronave_por_situacao(situacao_t situacao_procurada, dados_aeronave_
             printf("\n\n");
             aeronaves_encontradas++;
         }
+        lista = lista->prox;
+
     }
 
     if (aeronaves_encontradas == 0){
@@ -163,10 +209,15 @@ void listar_aeronave_por_situacao(situacao_t situacao_procurada, dados_aeronave_
 }
 
 
-void listar_rotas_por_destino(string destino_procurado, dados_rota_t *lista)
+void listar_rotas_por_destino(char* destino_procurado, dados_rota_t *lista)
 {
     int rotas_encontradas = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
@@ -176,20 +227,27 @@ void listar_rotas_por_destino(string destino_procurado, dados_rota_t *lista)
             printf("\n\n");
             rotas_encontradas++;
         }
+        lista = lista->prox;
+
     }
 
     if (rotas_encontradas == 0){
         printf("O destino <%s> nao esta registrado.\n", destino_procurado);
         printf("Os destinos existentes sao:\n");
-        //mostrar_destinos_existentes();
+        mostrar_destinos_existentes(lista);
         printf("\n\n");
     }
 }
 
-void listar_rotas_por_origem(string origem_procurada, dados_rota_t *lista)
+void listar_rotas_por_origem(char* origem_procurada, dados_rota_t *lista)
 {
     int rotas_encontradas = 0;
-    int i;
+    int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
@@ -199,12 +257,14 @@ void listar_rotas_por_origem(string origem_procurada, dados_rota_t *lista)
             printf("\n\n");
             rotas_encontradas++;
         }
+        lista = lista->prox;
+
     }
 
     if (rotas_encontradas == 0){
         printf("A origem <%s> nao esta registrada.\n", origem_procurada);
         printf("As origens existentes sao:\n");
-        //mostrar_origens_existentes();
+        mostrar_origens_existentes(lista);
         printf("\n\n");
     }
 }
@@ -217,6 +277,7 @@ int achar_maior_numero_de_passageiros(dados_rota_t *lista)
         if (maior_passageiros < lista->qtd_passageiros) {
             maior_passageiros = lista->qtd_passageiros;
         }
+        lista = lista->prox;
     }
     return maior_passageiros;
 }
@@ -229,13 +290,20 @@ int achar_menor_numero_de_passageiros(dados_rota_t *lista)
         if (menor_passageiros > lista->qtd_passageiros) {
             menor_passageiros = lista->qtd_passageiros;
         }
+        lista = lista->prox;
     }
     return menor_passageiros;
+    
 }
 
 void listar_rotas_maior_passageiros(int maior_passageiros, dados_rota_t *lista)
 {
     int i = 0;
+
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
 
     while (lista) {
         i++;
@@ -244,6 +312,7 @@ void listar_rotas_maior_passageiros(int maior_passageiros, dados_rota_t *lista)
                 mostrar_dados_rota(lista, stdout);
                 printf("\n");                        
         }
+        lista = lista->prox;
     }
     printf("\n");
 }
@@ -252,6 +321,11 @@ void listar_rotas_menor_passageiros(int menor_passageiros, dados_rota_t *lista)
 {
     int i = 0;
 
+    if (!lista) {
+        printf("Nenhuma aeronave cadastrada.\n");
+        return;
+    }
+
     while (lista) {
         i++;
         if (lista->qtd_passageiros == menor_passageiros){
@@ -259,6 +333,7 @@ void listar_rotas_menor_passageiros(int menor_passageiros, dados_rota_t *lista)
                 mostrar_dados_rota(lista, stdout);
                 printf("\n");                        
         }
+        lista = lista->prox;
     }
     printf("\n");
 }

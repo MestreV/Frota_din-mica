@@ -5,6 +5,8 @@
 #define T_STR         100
 #define STR_NOME_ARQ  20
 #define FIM           0
+#define FALSE         0
+#define TRUE          1
 
 
 typedef char str_arq[STR_NOME_ARQ];

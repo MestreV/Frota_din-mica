@@ -13,8 +13,9 @@ int menu(void)
     printf("6.Consultar rota por data\n");
     printf("7.Consumo total de combustivel (intervalo_data)\n");
     printf("0.Sair do programa\n");
-    printf(": : : :");
+    printf(": : : : ");
     scanf("%i", &opc);
+    getchar();
 
     return opc;
 }
@@ -29,8 +30,10 @@ int CADASTROS(void)
     printf("  1.Cadastrar nova aeronave\n");
     printf("  2.Cadastrar nova rota\n");
     printf("  0.Voltando!\n");
-    printf("  : : : :");
+    printf("  : : : : ");
     scanf("%i", &opc);
+    getchar();
+   
     
     return opc;
 }
@@ -43,8 +46,10 @@ int PERCENTUAIS(void)
     printf("  1.Percentual de voos (destino_intervaloData\n");
     printf("  2.Percentual de voos (aeronave)\n");
     printf("  0.Voltando!\n");
-    printf("  : : : :");
+    printf("  : : : : ");
     scanf("%i", &opc);
+    getchar();
+
     
     return opc;
 }
@@ -62,8 +67,10 @@ int LISTAGENS_AERONAVES(void)
     printf("  5.Listagem de aeronave (situacao)\n"); 
     printf("  6.Relatorio de aeronaves\n");  
     printf("  0.Voltando!\n");
-    printf("  : : : :");
+    printf("  : : : : ");
     scanf("%i", &opc);
+    getchar();
+
 
     return opc;
 }
@@ -80,8 +87,10 @@ int LISTAGEM_ROTAS(void)
     printf("  4.Listagem de rotas (menor_passageiros)\n");
     printf("  5.Relatorio de rotas\n");
     printf("  0.Voltar!\n");
-    printf("  : : : :");
+    printf("  : : : : ");
     scanf("%i", &opc);
+    getchar();
+
 
     return opc;
 }
@@ -95,8 +104,12 @@ int INSERIR_AERONAVE(void)
     printf("  1.Pelo inicio\n");
     printf("  2.Pelo fim\n");
     printf("  0.Voltar!\n");
-    printf("  : : : :");
-    scanf("%i%*c", &opc);
+    printf("  : : : : ");
+    scanf("%i", &opc);
+    getchar();
+
+
+    return opc;
 }
 
 int INSERIR_ROTA(void)
@@ -107,6 +120,10 @@ int INSERIR_ROTA(void)
     printf("  1.Pelo inicio\n");
     printf("  2.Pelo fim\n");
     printf("  0.Voltar!\n");
-    printf("  : : : :");
-    scanf("%i%*c", &opc);   
+    printf("  : : : : ");
+    scanf("%i", &opc); 
+    getchar();
+ 
+    
+    return opc;
 }

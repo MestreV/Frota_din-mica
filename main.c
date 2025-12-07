@@ -1,7 +1,6 @@
 #include "./include/menus.h"
 #include "./include/cadastros.h"
 #include "./include/listagens.h"
-#include "./include/consultas.h"
 #include "./include/types.h"
 #include "./include/percentuais.h"
 #include "./include/main.h"
@@ -40,7 +39,7 @@ int main()
                                                 case 0: printf("Voltando!\n");
                                                         break;
 
-                                                case 1: aux_aeronave = nova_aeronave();
+                                                case 1: aux_aeronave = nova_aeronave(lista_aeronaves);
                                                         inserir_lista_aeronave_pelo_inicio(&lista_aeronaves, aux_aeronave);
                                                         break;
 
@@ -80,47 +79,49 @@ int main()
                         opc1 = LISTAGENS_AERONAVES();
 
                         switch (opc1) {
-                                case 1: printf("LISTAGEM DE AERONAVE POR FABRICANTE\n");
-                                        printf("Fabricante desejado:");
-                                        getchar();
+                                case 1: printf("\nLISTAGEM DE AERONAVE POR FABRICANTE\n");
+                                        printf("Fabricante desejado: ");
                                         fgets(fabricante_desejado, T_STR, stdin);
                                         retirar_enter(fabricante_desejado);
                                         formatar_maiuculo(fabricante_desejado);
                                         listar_aeronave_fabricante(fabricante_desejado, lista_aeronaves);
                                         break;
                                 
-                                case 2: printf("LISTAGEM DE AERONAVE POR TIPO DE AVIAO\n");
+                                case 2: printf("\nLISTAGEM DE AERONAVE POR TIPO DE AVIAO\n");
                                         printf("Tipo procurado:");
                                         scanf("%d", &C_P);
+                                        getchar();
                                         listar_aeronave_por_tipo(C_P, lista_aeronaves);  
                                         break;
 
-                                case 3: printf("LISTAGEM DE AERONAVE POR MODELO DE AVIAO\n");
+                                case 3: printf("\nLISTAGEM DE AERONAVE POR MODELO DE AVIAO\n");
                                         printf("Modelo procurado:");
-                                        getchar();
                                         fgets(modelo_desejado, T_STR, stdin);
                                         retirar_enter(modelo_desejado);
                                         formatar_maiuculo(modelo_desejado);
                                         listar_aeronave_por_modelo(modelo_desejado, lista_aeronaves);     
                                         break;
 
-                                case 4: printf("LISTAGEM DE AERONAVE POR ANO DE FABRICACAO\n");
+                                case 4: printf("\nLISTAGEM DE AERONAVE POR ANO DE FABRICACAO\n");
                                         printf("Ano procurado:");
                                         scanf("%i", &ano_desejado);
+                                        getchar();
                                         listar_aeronave_por_ano(ano_desejado, lista_aeronaves);    
                                         break;
 
                                 case 5: 
-                                        printf("LISTAGEM DE AERONAVE POR SITUACAO\n");
+                                        printf("\nLISTAGEM DE AERONAVE POR SITUACAO\n");
                                         printf("Situacao procurada:");
                                         scanf("%i", &O_M);
+                                        getchar();
                                         listar_aeronave_por_situacao(O_M, lista_aeronaves); 
                                         break;
 
-                                case 6: listar_aeronaves_cadastradas(lista_aeronaves);
+                                case 6: printf("\nRELATORIO DE AERONAVES:\n");
+                                        listar_aeronaves_cadastradas(lista_aeronaves);
                                         break;
 
-                                case 0: printf("Voltando!\n");
+                                case 0: printf(" Voltando!\n");
                                         break;
                         }
                     } while(opc1 != FIM);
@@ -131,34 +132,33 @@ int main()
                         opc1 = LISTAGEM_ROTAS();
 
                         switch (opc1) {
-                                case 1: printf("LISTAGEM DE ROTA POR DESTINO\n");
+                                case 1: printf("\nLISTAGEM DE ROTA POR DESTINO\n");
                                         printf("Destino procurado:");
-                                        getchar();
                                         fgets(destino_desejado, T_STR, stdin);
                                         retirar_enter(destino_desejado);
                                         formatar_maiuculo(destino_desejado);
                                         listar_rotas_por_destino(destino_desejado, lista_rotas);
                                         break;
                                 
-                                case 2: printf("Origem procurada:");
-                                        getchar();
+                                case 2: printf("\nOrigem procurada:");
                                         fgets(origem_desejada, T_STR, stdin);
                                         retirar_enter(origem_desejada);
                                         formatar_maiuculo(origem_desejada);
                                         listar_rotas_por_origem(origem_desejada, lista_rotas);
                                         break;
 
-                                case 3: maior_passageiros = achar_maior_numero_de_passageiros();
-                                        printf("A(as) rota com maior numero de passageiros eh:\n");
+                                case 3: maior_passageiros = achar_maior_numero_de_passageiros(lista_rotas);
+                                        printf("\nA(as) rota com maior numero de passageiros eh:\n");
                                         listar_rotas_maior_passageiros(maior_passageiros, lista_rotas);
                                         break;
 
-                                case 4: menor_passageiros = achar_menor_numero_de_passageiros();
-                                        printf("A(as) rota com menor numero de passageiros eh:\n");
+                                case 4: menor_passageiros = achar_menor_numero_de_passageiros(lista_rotas);
+                                        printf("\nA(as) rota com menor numero de passageiros eh:\n");
                                         listar_rotas_menor_passageiros(menor_passageiros, lista_rotas);
                                         break;
 
-                                case 5: listar_rotas_cadastradas(lista_rotas);
+                                case 5: printf("\nRELATORIO DE ROTAS:\n");
+                                        listar_rotas_cadastradas(lista_rotas);
                                         break;
 
                                 case 0: printf("Voltando!\n");
@@ -173,7 +173,6 @@ int main()
                         switch (opc1){
                                 case 1: printf("PERCENTUAL DE VOOS PARA UM DESTINO EM UM INTERVALO DE DATAS\n");
                                         printf("Determinar destino:");
-                                        getchar();
                                         fgets(destino_determinado, T_STR, stdin);
                                         retirar_enter(destino_determinado);
                                         formatar_maiuculo(destino_determinado);
@@ -209,12 +208,14 @@ int main()
 
                     printf("Colocar apenas dia e mes.\nData inicial:");
                     scanf("%d/%d", &data_comeco.dia, &data_comeco.mes);
+                    while (getchar() != '\n');
+
                     printf("Data final: ");
                     scanf("%d/%d", &data_terminado.dia, &data_terminado.mes);
-                    getchar();
+                    while (getchar() != '\n');
 
-                    inicio = data_inicio_intervalo_em_horas(data_comeco);
-                    fim = data_final_intervalo_em_horas(data_terminado);
+                    comeco = data_inicio_intervalo_em_horas(data_comeco);
+                    final = data_final_intervalo_em_horas(data_terminado);
 
                     combustivel_total = combustivel_total_por_intervalo(comeco, final, lista_rotas);
                     printf("O total de combustivel consumido foi: %dL\n\n", combustivel_total);
@@ -222,8 +223,8 @@ int main()
 
             case 6: printf("CONSULTA DE ROTA POR DATA\n");
                     printf("Data da rota: ");
-                    scanf("%d/%d>", &data_desejada.dia, &data_desejada.mes);
-                    getchar();
+                    scanf("%d/%d", &data_desejada.dia, &data_desejada.mes);
+                    while (getchar() != '\n');
                     consultar_rota_data(data_desejada, lista_rotas);   
                     break;
 
