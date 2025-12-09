@@ -42,7 +42,7 @@ void mostrar_matriculas_existentes(dados_aeronave_t *lista)
 void mostrar_datas_existentes(dados_rota_t *lista)
 {
     while (lista) {
-        printf(" -> %d/%d", lista->data_hora.dia, lista->data_hora.mes);
+        printf(" -> %d/%d/%d", lista->data_hora.dia, lista->data_hora.mes, lista->data_hora.ano);
         printf("\n");
         lista = lista->prox;
     }
