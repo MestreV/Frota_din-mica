@@ -4,14 +4,21 @@
 
 #define T_STR         100
 #define STR_NOME_ARQ  20
+#define STR_NOME_ARQ2 16
 #define FIM           0
 #define FALSE         0
 #define TRUE          1
+#define MSG           31
 
 
 typedef char str_arq[STR_NOME_ARQ];
 
+typedef char str_arq2[STR_NOME_ARQ2];
+
 typedef char string[T_STR];
+
+typedef char string_msg[MSG];
+
 
 typedef enum {CARGA = 1, PASSAGEIRO = 2} tipo_t;
 

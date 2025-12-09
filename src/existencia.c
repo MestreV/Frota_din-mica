@@ -57,7 +57,7 @@ void mostrar_destinos_existentes(dados_rota_t *lista)
     }
 }
 
-void mostrar_orgigens_existentes(dados_rota_t *lista)
+void mostrar_origens_existentes(dados_rota_t *lista)
 {
     while (lista) {
         printf(" -> %s", lista->local_partida);

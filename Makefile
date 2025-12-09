@@ -17,7 +17,7 @@ obj:
 	$(CC) -c $(SRC)/arquivos.c -o $(OBJS)/arquivos.o
 	$(CC) -c $(SRC)/existencia.c -o $(OBJS)/existencia.o
 
-	$(CC) -c main.c -o $(OBJS)/main.o 
+	$(CC) -c main.c -o $(OBJS)/main.o
 
 clear:
 	$(LIMPAR) $(OBJS)/*.o

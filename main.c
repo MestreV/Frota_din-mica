@@ -8,14 +8,18 @@
 #include "./include/arquivos.h"
 #include "./include/consultas.h"
 #include <stdio.h>
+#include <string.h>
 
 
 int main()
 {   
     dados_aeronave_t *lista_aeronaves = NULL, *aux_aeronave = NULL;
     dados_rota_t *lista_rotas = NULL, *aux_rotas = NULL;
-    int opc, opc1, opc2, ano_desejado, maior_passageiros, menor_passageiros, inicio, fim, comeco, final, combustivel_total;
-    string fabricante_desejado, modelo_desejado, destino_desejado, destino_determinado, origem_desejada, prefixo_desejado, matricula_percentual; 
+    int opc, opc1, opc2, ano_desejado, maior_passageiros, menor_passageiros, inicio,
+     fim, comeco, final, combustivel_total;
+
+    string fabricante_desejado, modelo_desejado, destino_desejado, destino_determinado,
+     origem_desejada, prefixo_desejado, matricula_percentual, matricula_desejada, nome_arq; 
     tipo_t C_P;
     situacao_t O_M;
     data_hora_t data_desejada, data_inicio, data_termino, data_comeco, data_terminado; 
@@ -39,7 +43,7 @@ int main()
                                                 case 0: printf("Voltando!\n");
                                                         break;
 
-                                                case 1: aux_aeronave = nova_aeronave(lista_aeronaves);
+                                                case 1: aux_aeronave = nova_aeronave();
                                                         inserir_lista_aeronave_pelo_inicio(&lista_aeronaves, aux_aeronave);
                                                         break;
 
@@ -58,12 +62,12 @@ int main()
                                                 case 0: printf("Voltando!\n");
                                                         break;
 
-                                                case 1: aux_rotas = nova_rota();
+                                                case 1: aux_rotas = nova_rota(lista_aeronaves);
                                                         inserir_lista_rota_pelo_inicio(&lista_rotas, aux_rotas);
                                                         break;
 
                                                 case 2: 
-                                                        aux_rotas = nova_rota();
+                                                        aux_rotas = nova_rota(lista_aeronaves);
                                                         inserir_lista_rota_pelo_final(&lista_rotas, aux_rotas);      
                                                         break;                                         
                                             }
@@ -84,7 +88,7 @@ int main()
                                         fgets(fabricante_desejado, T_STR, stdin);
                                         retirar_enter(fabricante_desejado);
                                         formatar_maiuculo(fabricante_desejado);
-                                        listar_aeronave_fabricante(fabricante_desejado, lista_aeronaves);
+                                        listar_aeronave_fabricante(fabricante_desejado, lista_aeronaves, lista_aeronaves);
                                         break;
                                 
                                 case 2: printf("\nLISTAGEM DE AERONAVE POR TIPO DE AVIAO\n");
@@ -99,14 +103,14 @@ int main()
                                         fgets(modelo_desejado, T_STR, stdin);
                                         retirar_enter(modelo_desejado);
                                         formatar_maiuculo(modelo_desejado);
-                                        listar_aeronave_por_modelo(modelo_desejado, lista_aeronaves);     
+                                        listar_aeronave_por_modelo(modelo_desejado, lista_aeronaves, lista_aeronaves);     
                                         break;
 
                                 case 4: printf("\nLISTAGEM DE AERONAVE POR ANO DE FABRICACAO\n");
                                         printf("Ano procurado:");
                                         scanf("%i", &ano_desejado);
                                         getchar();
-                                        listar_aeronave_por_ano(ano_desejado, lista_aeronaves);    
+                                        listar_aeronave_por_ano(ano_desejado, lista_aeronaves, lista_aeronaves);    
                                         break;
 
                                 case 5: 
@@ -137,17 +141,17 @@ int main()
                                         fgets(destino_desejado, T_STR, stdin);
                                         retirar_enter(destino_desejado);
                                         formatar_maiuculo(destino_desejado);
-                                        listar_rotas_por_destino(destino_desejado, lista_rotas);
+                                        listar_rotas_por_destino(destino_desejado, lista_rotas, lista_rotas);
                                         break;
                                 
                                 case 2: printf("\nOrigem procurada:");
                                         fgets(origem_desejada, T_STR, stdin);
                                         retirar_enter(origem_desejada);
                                         formatar_maiuculo(origem_desejada);
-                                        listar_rotas_por_origem(origem_desejada, lista_rotas);
+                                        listar_rotas_por_origem(origem_desejada, lista_rotas, lista_rotas);
                                         break;
 
-                                case 3: maior_passageiros = achar_maior_numero_de_passageiros(lista_rotas);
+                                case 3: maior_passageiros = achar_maior_numero_de_passageiros(lista_rotas, 0);
                                         printf("\nA(as) rota com maior numero de passageiros eh:\n");
                                         listar_rotas_maior_passageiros(maior_passageiros, lista_rotas);
                                         break;
@@ -170,48 +174,48 @@ int main()
             case 4: do {
                         opc1 = PERCENTUAIS();
                          
-                        switch (opc1){
-                                case 1: printf("PERCENTUAL DE VOOS PARA UM DESTINO EM UM INTERVALO DE DATAS\n");
+                        switch (opc1) {
+                                case 1: printf("\nPERCENTUAL DE VOOS PARA UM DESTINO EM UM INTERVALO DE DATAS\n");
                                         printf("Determinar destino:");
                                         fgets(destino_determinado, T_STR, stdin);
                                         retirar_enter(destino_determinado);
                                         formatar_maiuculo(destino_determinado);
 
-                                        printf("Colocar apenas dia e mes.\nData inicial: ");
-                                        scanf("%d/%d", &data_inicio.dia, &data_inicio.mes);
+                                        printf("Data inicial: ");
+                                        scanf("%d/%d/%d", &data_inicio.dia, &data_inicio.mes, &data_inicio.ano);
                                         printf("Data final: ");
-                                        scanf("%d/%d", &data_termino.dia, &data_termino.mes);
+                                        scanf("%d/%d/%d", &data_termino.dia, &data_termino.mes, &data_inicio.ano);
                                         getchar();
 
                                         inicio = data_inicio_intervalo_em_horas(data_inicio);
                                         fim = data_final_intervalo_em_horas(data_termino);
 
-                                        percentual_voos_destino_intervalo_datas(destino_determinado, inicio, fim, lista_rotas);
+                                        percentual_voos_destino_intervalo_datas(destino_determinado, inicio, fim, lista_rotas, lista_rotas);
                                         break;
 
-                                case 2: printf("PERCENTUAL DE VOOS REALIZADOS POR AERONAVE\n");
+                                case 2: printf("\nPERCENTUAL DE VOOS REALIZADOS POR AERONAVE\n");
                                         printf("Matricula da aeronave:");
                                         fgets(matricula_percentual, T_STR, stdin);
                                         retirar_enter(matricula_percentual);
                                         formatar_maiuculo(matricula_percentual);
-                                        percentual_voos_realizados_por_aeronave(matricula_percentual, lista_rotas, lista_aeronaves);
+                                        percentual_voos_realizados_por_aeronave(matricula_percentual, lista_rotas, lista_aeronaves, lista_aeronaves);
                                         break;
 
                                 case 0: printf("Voltando!\n");
                                         break;        
                         }
-                    } while(opc1 != FIM);
+                    } while (opc1 != FIM);
                     break;
 
             case 5: 
-                    printf("CONSUMO DE COMBUSTIVEL POR INTERVALO DE DATA\n");
+                    printf("\nCONSUMO DE COMBUSTIVEL POR INTERVALO DE DATA\n");
 
                     printf("Colocar apenas dia e mes.\nData inicial:");
-                    scanf("%d/%d", &data_comeco.dia, &data_comeco.mes);
+                    scanf("%d/%d/%d", &data_comeco.dia, &data_comeco.mes, &data_comeco.ano);
                     while (getchar() != '\n');
 
                     printf("Data final: ");
-                    scanf("%d/%d", &data_terminado.dia, &data_terminado.mes);
+                    scanf("%d/%d/%d", &data_terminado.dia, &data_terminado.mes, &data_terminado.ano);
                     while (getchar() != '\n');
 
                     comeco = data_inicio_intervalo_em_horas(data_comeco);
@@ -219,15 +223,75 @@ int main()
 
                     combustivel_total = combustivel_total_por_intervalo(comeco, final, lista_rotas);
                     printf("O total de combustivel consumido foi: %dL\n\n", combustivel_total);
+                    msg("Pressione ENTER para continuar");
                     break;
 
-            case 6: printf("CONSULTA DE ROTA POR DATA\n");
+            case 6: printf("\nCONSULTA DE ROTA POR DATA:\n");
                     printf("Data da rota: ");
                     scanf("%d/%d", &data_desejada.dia, &data_desejada.mes);
                     while (getchar() != '\n');
-                    consultar_rota_data(data_desejada, lista_rotas);   
+                    consultar_rota_data(data_desejada, lista_rotas, lista_rotas);   
                     break;
 
+            case 7: printf("\nBUSCA DE AERONAVE POR MATRICULA:\n");
+                    printf("Matricula da aeronave:");
+                    fgets(matricula_desejada, T_STR, stdin);
+                    retirar_enter(matricula_desejada);
+                    formatar_maiuculo(matricula_desejada);
+                    busca_aeronave_matricula(matricula_desejada, lista_aeronaves, lista_aeronaves);
+                    break;
+
+            case 8: do {
+                        opc1 = EXPORTACOES();
+
+                        switch (opc1) {
+                                case 1: printf("Nome do arquivo? ");
+                                        fgets(nome_arq, T_STR, stdin);
+                                        retirar_enter(nome_arq);
+                                        strcat(nome_arq, ".txt");
+                                        exportar_dados_aeronaves_txt(lista_aeronaves, nome_arq);
+                                        break;
+                                            
+                                case 2: printf("Nome do arquivo? ");
+                                        fgets(nome_arq, T_STR, stdin);
+                                        retirar_enter(nome_arq);
+                                        strcat(nome_arq, ".csv");
+                                        exportar_dados_aeronaves_csv(lista_aeronaves, nome_arq);
+                                        break;
+
+                                case 3: printf("Nome do arquivo? ");
+                                        fgets(nome_arq, T_STR, stdin);
+                                        retirar_enter(nome_arq);
+                                        strcat(nome_arq, ".html");
+                                        exportar_dados_aeronaves_html(lista_aeronaves, nome_arq);
+                                        break;
+
+                                case 4: printf("Nome do arquivo? ");
+                                        fgets(nome_arq, T_STR, stdin);
+                                        retirar_enter(nome_arq);
+                                        strcat(nome_arq, ".txt");
+                                        exportar_dados_rotas_txt(lista_rotas, nome_arq);
+                                        break;
+                                            
+                                case 5: printf("Nome do arquivo? ");
+                                        fgets(nome_arq, T_STR, stdin);
+                                        retirar_enter(nome_arq);
+                                        strcat(nome_arq, ".csv");
+                                        exportar_dados_rotas_csv(lista_rotas, nome_arq);
+                                        break;
+
+                                case 6: printf("Nome do arquivo? ");
+                                        fgets(nome_arq, T_STR, stdin);
+                                        retirar_enter(nome_arq);
+                                        strcat(nome_arq, ".html");
+                                        exportar_dados_rotas_html(lista_rotas, nome_arq);
+                                        break;
+                                case 0: 
+                                        break;
+                        }
+                    } while (opc1 != FIM);
+                    break;
+            
             case 0: printf("Fechando!\n");
                     salvar_registros_aeronave_arquivo_binario("aeronaves_frota.bin", lista_aeronaves);
                     salvar_registros_rotas_arquivo_binario("rotas_frota.bin", lista_rotas);   
@@ -239,30 +303,3 @@ int main()
 
     return 0;
 }
-
-
-
-/*
-void INSERIR_LISTA_AERONAVE(dados_aeronave_t **lista, dados_aeronave_t *nova_aeronave)
-{
-    unsigned int insercao = 2;
-
-    printf("  0 = inicio\n");
-    printf("  1 = final\n")
-    printf("lado desejado da insercao: %d\n", insercao);
-
-    if (insercao == 0) {
-        aux_aeronave = nova_aeronave();
-        inserir_lista_aeronave_pelo_inicio(&lista, nova_aeronave);       
-    }
-
-    if (insercao == 1) {
-        aux_aeronave = nova_aeronave();
-        inserir_lista_aeronave_pelo_final(&lista, nova_aeronave);
-    }
-
-    if (insercao > 1 || insercao < 1) {
-        printf("Tipo de insercao nao compativel!\n");
-    }
-}
-*/

@@ -9,9 +9,10 @@ int menu(void)
     printf("2.Listagens (aeronaves)\n");
     printf("3.Listagens (rotas)\n");
     printf("4.Percentuais\n");
-    printf("5.Busca de aeronave por matricula\n");
+    printf("5.Consumo total de combustivel (intervalo_data)\n");
     printf("6.Consultar rota por data\n");
-    printf("7.Consumo total de combustivel (intervalo_data)\n");
+    printf("7.Busca de aeronave por matricula\n");
+    printf("8.Exportacoes\n");
     printf("0.Sair do programa\n");
     printf(": : : : ");
     scanf("%i", &opc);
@@ -115,6 +116,7 @@ int INSERIR_AERONAVE(void)
 int INSERIR_ROTA(void)
 {
     int opc;
+
     printf("\n");
     printf("  INSERCAO DE ROTA:\n");
     printf("  1.Pelo inicio\n");
@@ -126,4 +128,26 @@ int INSERIR_ROTA(void)
  
     
     return opc;
+}
+
+int EXPORTACOES(void)
+{
+    int opc;
+
+    printf("\n");
+    printf("  EXPORTACOES ALTERNATIVAS:\n");
+    printf("  AERONAVES:\n");
+    printf("  1.Arquivo texto\n");
+    printf("  2.Arquivo CSV\n");
+    printf("  3.Arquivo html\n\n");
+    printf("  ROTAS:\n");
+    printf("  4.Arquivo texto\n");
+    printf("  5.Arquivo CSV\n");
+    printf("  6.Arquivo html\n");
+    printf("  0.Voltar!\n");
+    printf("  : : : : ");
+    scanf("%i", &opc);
+    getchar();
+
+    return opc;   
 }

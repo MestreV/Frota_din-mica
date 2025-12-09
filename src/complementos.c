@@ -13,3 +13,9 @@ void formatar_maiuculo(char* str)
         *(str+i) = toupper(*(str+i));
     }
 }
+
+void msg(string_msg msg)
+{
+    printf("%s\n", msg);
+    getchar();
+}

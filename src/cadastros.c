@@ -1,21 +1,50 @@
 #include "../include/cadastros.h"
+#include "../include/existencia.h"
 #include "../include/types.h"
 #include "../include/complementos.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 int checar_matricula_alocada(char* matricula_duvidosa, dados_aeronave_t *lista)
 {
-    int true_or_false = 0;
-
     while (lista) {
         if (strcmp(matricula_duvidosa, lista->matricula) == 0) {
-            true_or_false++;
-            return true_or_false;
+            return TRUE;
         }
         lista = lista->prox;
     }
-    return true_or_false;
+    return FALSE;
+}
+
+int qtd_psg_aeronave_alocada(char* matricula_alocada, dados_aeronave_t *lista)
+{
+    int qtd_psg;
+
+    while (lista) {
+        if (strcmp(matricula_alocada, lista->matricula) == 0) {
+            qtd_psg = lista->num_passageiros;
+            return qtd_psg;
+        }
+        lista = lista->prox;
+    }
+    return -1;
+}
+
+int checar_situacao_aeronave(char* matricula_alocada, dados_aeronave_t *lista)
+{
+    while (lista) {
+        if (strcmp(matricula_alocada, lista->matricula) == 0) {
+            if (lista->situacao == MANUTENCAO) {
+                return FALSE;
+            }
+            else if (lista->situacao == OPERACAO) {
+                return TRUE;
+            }
+        }
+        lista = lista->prox;
+    }
+    return FALSE;
 }
 
 
@@ -85,10 +114,12 @@ dados_aeronave_t *nova_aeronave()
 }
 
 
-dados_rota_t *nova_rota(dados_aeronave_t lista_aeronave)
+
+dados_rota_t *nova_rota(dados_aeronave_t *lista_aeronave)
 {
     dados_rota_t *nova = NULL;
-    int validacao;
+    int validacao, validacao2;
+    int passageiros;
 
     nova = (dados_rota_t*)malloc(sizeof(dados_rota_t));
   
@@ -98,24 +129,38 @@ dados_rota_t *nova_rota(dados_aeronave_t lista_aeronave)
     fgets(nova->matricula_alocada, T_STR, stdin);
     retirar_enter(nova->matricula_alocada);
     formatar_maiuculo(nova->matricula_alocada);
-    validacao = checar_matricula_alocada(nova->matricula_alocada, lista_aeronave);
-    while (validacao = FALSE) {
-        printf("Matricula <%s> inexistente para alocacao\n", nova->matricula_alocada);
-        printf("As matriculas existentes eh:\n");
-        mostrar_matriculas_existentes(lista_aeronave);
-        free(nova->matricula_alocada);
 
+    validacao = checar_matricula_alocada(nova->matricula_alocada, lista_aeronave);
+    validacao2 = checar_situacao_aeronave(nova->matricula_alocada, lista_aeronave);
+    
+    while (validacao == FALSE) {
+        printf("Matricula <%s> eh inexistente\n", nova->matricula_alocada);
+        printf("As matriculas existentes eh:\n");
+        mostrar_matriculas_existentes(lista_aeronave); 
         printf("Aeronave alocada.............: ");
-        fgets(nova->matricula_alocada, T_STR, stdin);        
+        fgets(nova->matricula_alocada, T_STR, stdin);
+        retirar_enter(nova->matricula_alocada);
+        formatar_maiuculo(nova->matricula_alocada);
+        validacao = checar_matricula_alocada(nova->matricula_alocada, lista_aeronave);  
     }
 
+    if (validacao == TRUE) {
+        if (validacao2 == FALSE) {
+            printf("Matricula <%s> eh de aeronave em manutencao\n", nova->matricula_alocada);
+            printf("Tente outra matricula!\n");
+            printf("Aeronave alocada.............: ");
+            fgets(nova->matricula_alocada, T_STR, stdin);
+            retirar_enter(nova->matricula_alocada);
+            formatar_maiuculo(nova->matricula_alocada);
+            validacao2 = checar_situacao_aeronave(nova->matricula_alocada, lista_aeronave);
+        }
+    }
 
     printf("Codigo da rota...............: ");
     scanf("%d", &nova->codigo);
-
     printf("Data e hora..................:\n");
     printf("Data: ");
-    scanf("%d/%d", &nova->data_hora.dia, &nova->data_hora.mes);
+    scanf("%d/%d/%d", &nova->data_hora.dia, &nova->data_hora.mes, &nova->data_hora.ano);
     printf("Horario: ");
     scanf("%d:%d", &nova->data_hora.hora, &nova->data_hora.minutos);
     getchar();

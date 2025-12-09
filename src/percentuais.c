@@ -1,4 +1,5 @@
 #include "../include/percentuais.h"
+#include "../include/complementos.h"
 #include "../include/existencia.h"
 #include "../include/types.h"
 #include <string.h>
@@ -36,7 +37,7 @@ int contador_de_destinos(string destino, dados_rota_t *lista)
     return destinos_encontrados;
 }
 
-void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim, dados_rota_t *lista)
+void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim, dados_rota_t *lista, dados_rota_t *lista2)
 {
     int total_voos_do_intervalo = 0;
     int voos_destino = 0;
@@ -56,31 +57,33 @@ void percentual_voos_destino_intervalo_datas(string destino, int inicio, int fim
                 if (inicio == horas_data && strcmp(lista->local_destino, destino) == 0){
                     voos_destino++;
                 }
-                lista = lista->prox;
             }
-        }
-    if (voos_destino != 0){
-        percentual_voos = (voos_destino / total_voos_do_intervalo) * 100;
-        printf("Percentual de voos realizados eh: %.2f%%\n\n", percentual_voos);
+            lista = lista->prox;
         }
 
-    if (voos_destino == 0){
-        printf("O destino <%s> nao possui voos nesse intervalo de datas.\n", destino);
-        printf("Tente outro desses destinos cadastrados:\n");
-        mostrar_destinos_existentes(lista);
-        printf("\n");
+        if (voos_destino != 0){
+            percentual_voos = (voos_destino / total_voos_do_intervalo) * 100;
+            printf("Percentual de voos realizados eh: %.2f%%\n\n", percentual_voos);
+        }
+
+        if (voos_destino == 0){
+            printf("O destino <%s> nao possui voos nesse intervalo de datas.\n", destino);
+            printf("Tente outro desses destinos cadastrados:\n");
+            mostrar_destinos_existentes(lista2);
+            printf("\n");
         }
     }
 
     if (destinos_encontrados == 0){
             printf("O destino <%s> nao existe na base de dados.\n", destino);
             printf("Os destinos existentes sao:\n");
-            //mostrar_datas_existentes();
+            mostrar_datas_existentes(lista2);
             printf("\n");
-    }    
+    } 
+    msg("Pressione ENTER para continuar");   
 }
 
-void percentual_voos_realizados_por_aeronave(string matricula_aeronave, dados_rota_t *lista, dados_aeronave_t *lista_a)
+void percentual_voos_realizados_por_aeronave(string matricula_aeronave, dados_rota_t *lista, dados_aeronave_t *lista_a, dados_aeronave_t *lista_a2)
 {
     int total_voos = 0;
     int voos_aeronave = 0;
@@ -114,8 +117,9 @@ void percentual_voos_realizados_por_aeronave(string matricula_aeronave, dados_ro
     if (aeronave_encontrada == 0){
         printf("Matricula <%s> inexistente!\n", matricula_aeronave);
         printf("As matriculas existentes sao:\n");
-        //mostrar_matriculas_existentes();
+        mostrar_matriculas_existentes(lista_a2);
         printf("\n");
     }
+    msg("Pressione ENTER para continuar");
 }
 

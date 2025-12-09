@@ -10,5 +10,6 @@ int LISTAGEM_ROTAS(void);
 int PERCENTUAIS(void);
 int INSERIR_AERONAVE(void);
 int INSERIR_ROTA(void);
+int EXPORTACOES(void);
 
 #endif
